@@ -98,7 +98,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Single"
           badgeClassName="bg-dp-100 text-dp-500 border border-dp-300/30 dark:bg-dp-700/30 dark:text-dp-300 dark:border-dp-500/30"
-          description="type=\"single\" — only one item can be active at a time. Selecting a new item deactivates the previous selection."
+          description="type=\"single\" - only one item can be active at a time. Selecting a new item deactivates the previous selection."
         >
           <div className="flex flex-col gap-2">
             <ToggleGroup
@@ -130,7 +130,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Multiple"
           badgeClassName="bg-dp-100 text-dp-500 border border-dp-300/30 dark:bg-dp-700/30 dark:text-dp-300 dark:border-dp-500/30"
-          description="type=\"multiple\" — each item toggles independently. Any number of items can be active simultaneously."
+          description="type=\"multiple\" - each item toggles independently. Any number of items can be active simultaneously."
         >
           <div className="flex flex-col gap-2">
             <ToggleGroup
@@ -185,7 +185,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Outline"
           badgeClassName="bg-foreground/[0.06] text-foreground border border-foreground/[0.12] dark:bg-foreground/10 dark:border-foreground/20"
-          description="grey-200 border at rest. Matches Input height and styling — ideal for toolbars."
+          description="grey-200 border at rest. Matches Input height and styling - ideal for toolbars."
         >
           <ToggleGroup type="single" defaultValue="bold" variant="outline">
             <ToggleGroupItem value="bold" aria-label="Bold">
@@ -209,7 +209,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Small"
           badgeClassName="bg-grey-blue-500 text-grey-900 border border-grey-200 dark:bg-muted dark:text-muted-foreground dark:border-border"
-          description="h-8 — compact toolbars and dense inline controls."
+          description="h-8 - compact toolbars and dense inline controls."
         >
           <ToggleGroup type="single" defaultValue="left" variant="outline" size="sm">
             <ToggleGroupItem value="left" aria-label="Align left">
@@ -228,7 +228,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Default"
           badgeClassName="bg-grey-blue-500 text-grey-900 border border-grey-200 dark:bg-muted dark:text-muted-foreground dark:border-border"
-          description="h-9 — standard toolbar height, matches Input default size."
+          description="h-9 - standard toolbar height, matches Input default size."
         >
           <ToggleGroup type="single" defaultValue="left" variant="outline" size="default">
             <ToggleGroupItem value="left" aria-label="Align left">
@@ -247,7 +247,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Large"
           badgeClassName="bg-grey-blue-500 text-grey-900 border border-grey-200 dark:bg-muted dark:text-muted-foreground dark:border-border"
-          description="h-10 — prominent controls or larger touch targets."
+          description="h-10 - prominent controls or larger touch targets."
         >
           <ToggleGroup type="single" defaultValue="left" variant="outline" size="lg">
             <ToggleGroupItem value="left" aria-label="Align left">
@@ -318,7 +318,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Disabled"
           badgeClassName="bg-muted text-muted-foreground border border-border"
-          description="Entire group disabled — all items non-interactive with reduced opacity."
+          description="Entire group disabled - all items non-interactive with reduced opacity."
         >
           <ToggleGroup
             type="single"
