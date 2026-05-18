@@ -70,12 +70,12 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
 }
 
 const tableHeadVariants = cva(
-  "px-3 py-2.5 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+  "px-4 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
   {
     variants: {
       variant: {
-        default: "text-left text-grey-600 dark:text-grey-600 font-medium text-[9px] uppercase tracking-wide",
-        centered: "text-center text-grey-600 dark:text-grey-600 font-medium text-[9px] uppercase tracking-wide",
+        default: "text-left text-[var(--color-grey-600)] dark:text-grey-600 uppercase tracking-wide",
+        centered: "text-center text-[var(--color-grey-600)] dark:text-grey-600 uppercase tracking-wide",
       },
     },
     defaultVariants: {
@@ -94,14 +94,14 @@ function TableHead({
     <th
       data-slot="table-head"
       className={cn(tableHeadVariants({ variant }), className)}
-      style={style}
+      style={{ fontWeight: "var(--font-weight-medium)", ...style }}
       {...props}
     />
   );
 }
 
 const tableCellVariants = cva(
-  "px-3 py-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+  "px-4 py-2.5 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
   {
     variants: {
       variant: {

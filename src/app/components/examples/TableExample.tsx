@@ -108,7 +108,10 @@ function SortHeader({
       className="inline-flex items-center gap-1.5 cursor-pointer group"
       onClick={onClick}
     >
-      <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]">
+      <span
+        className="uppercase tracking-wide text-[var(--color-grey-600)] dark:text-grey-600"
+        style={{ fontWeight: "var(--font-weight-medium)" }}
+      >
         {children}
       </span>
       {isActive ? (
@@ -173,7 +176,7 @@ export default function TableExample() {
         {/* ── Floating header row ── */}
         <TableHeader>
           <tr className="bg-table-header-bg dark:bg-muted/40 group">
-            <TableHead className={`${COL.check} rounded-l-xl`} variant="default">
+            <TableHead className={`pl-5 pr-2 ${COL.check} rounded-l-xl`} variant="default">
               <div
                 className={`flex items-center justify-center transition-opacity ${
                   someSelected || allSelected
@@ -261,7 +264,7 @@ export default function TableExample() {
                 {/* Checkbox */}
                 <TableCell
                   variant="checkbox"
-                  className={`border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                  className={`pl-5 pr-2 border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
                     isFirst ? "rounded-tl-lg" : ""
                   } ${isLast ? "rounded-bl-lg" : ""}`}
                 >
