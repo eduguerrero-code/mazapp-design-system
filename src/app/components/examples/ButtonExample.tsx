@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowRight, Download, Mail, Loader2, ChevronRight, Plus } from "lucide-react";
 
 export default function ButtonExample() {
+  const [pressed, setPressed] = useState<Record<string, boolean>>({});
   return (
     <div className="w-full space-y-10">
       {/* ── Primary ── */}
@@ -81,6 +83,50 @@ export default function ButtonExample() {
 
       {/* ── States ── */}
       <Section title="States">
+        <Row label="Default">
+          <Button>Primary</Button>
+          <Button variant="outline">Outlined</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+        </Row>
+        <Row label="Pressed">
+          <div className="flex gap-3 flex-wrap">
+            <span className="text-xs text-muted-foreground italic">Click and hold to see pressed state</span>
+          </div>
+          <Button>Primary</Button>
+          <Button variant="outline">Outlined</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+        </Row>
+        <Row label="Active">
+          <Button
+            onClick={() => setPressed({...pressed, primary: !pressed.primary})}
+            className={pressed.primary ? 'bg-dp-700 dark:bg-dp-500' : ''}
+          >
+            {pressed.primary ? 'Active' : 'Click Me'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => setPressed({...pressed, outline: !pressed.outline})}
+            className={pressed.outline ? 'bg-dp-100 dark:bg-mz-purple-900/40' : ''}
+          >
+            {pressed.outline ? 'Active' : 'Click Me'}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setPressed({...pressed, secondary: !pressed.secondary})}
+            className={pressed.secondary ? 'bg-mz-purple-700 dark:bg-mz-purple-700' : ''}
+          >
+            {pressed.secondary ? 'Active' : 'Click Me'}
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => setPressed({...pressed, ghost: !pressed.ghost})}
+            className={pressed.ghost ? 'bg-dp-100 dark:bg-mz-purple-900/40' : ''}
+          >
+            {pressed.ghost ? 'Active' : 'Click Me'}
+          </Button>
+        </Row>
         <Row label="Disabled">
           <Button disabled>Primary</Button>
           <Button variant="outline" disabled>Outlined</Button>
