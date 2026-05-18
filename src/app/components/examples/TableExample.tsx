@@ -2,15 +2,23 @@ import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import {
   ArrowDown,
-  ArrowUpDown,
   Clock,
   MoreVertical,
+  Eye,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { OcrStatusTag, type OcrStatus } from "../ui/ocr-status-tag";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 /* ─── Data ─── */
 type SuggestedAction = "View" | "Manual entry";
-type RowSize = "S" | "M" | "L";
 
 interface DocRow {
   id: string;
@@ -42,26 +50,15 @@ const documents: DocRow[] = [
 
 /* ─── Column widths ─── */
 const COL = {
-  check: "w-[3%]",
-  date: "w-[9%]",
-  desc: "w-[22%]",
-  type: "w-[22%]",
-  clock: "w-[3%]",
-  ocr: "w-[18%]",
-  action: "w-[15%]",
-  kebab: "w-[3%]",
+  check: "w-[40px]",
+  date: "w-[10%]",
+  desc: "w-[20%]",
+  type: "w-[20%]",
+  clock: "w-[5%]",
+  ocr: "w-[15%]",
+  action: "w-[12%]",
+  kebab: "w-[5%]",
 } as const;
-
-/* ─── Row size padding ─── */
-const ROW_SIZES = {
-  S: { header: "py-2", data: "py-2" },
-  M: { header: "py-3", data: "py-3.5" },
-  L: { header: "py-4", data: "py-5" },
-} as const;
-
-/* ─── Cell base class ─── */
-const thBase = "px-2 text-left text-[9px] font-medium uppercase tracking-wide text-grey-500 dark:text-muted-foreground whitespace-nowrap align-middle font-sans";
-const tdBase = "px-2 align-middle whitespace-nowrap text-xs";
 
 /* ─── Action button ─── */
 function ActionButton({ action }: { action: SuggestedAction }) {
@@ -80,39 +77,57 @@ function ActionButton({ action }: { action: SuggestedAction }) {
 }
 
 /* ─── Sortable header cell ─── */
-function SortTh({
+function SortHeader({
   children,
-  active = false,
-  colClass,
-  rowSize,
+  isActive = false,
+  direction = "desc",
+  onClick,
 }: {
   children: React.ReactNode;
-  active?: boolean;
-  colClass?: string;
-  rowSize: RowSize;
+  isActive?: boolean;
+  direction?: "asc" | "desc";
+  onClick?: () => void;
 }) {
   return (
-    <th className={`${thBase} ${ROW_SIZES[rowSize].header} ${colClass ?? ""} border-y border-grey-200 dark:border-border`}>
-      <button className="inline-flex items-center gap-1.5 cursor-pointer group">
+    <button
+      className="inline-flex items-center gap-1.5 cursor-pointer group"
+      onClick={onClick}
+    >
+      <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium">
         {children}
-        {active ? (
-          <span className="inline-flex items-center justify-center size-5 rounded-full bg-[#E57373]">
-            <ArrowDown className="size-3 text-white" />
-          </span>
-        ) : (
-          <span className="inline-flex items-center justify-center size-5 rounded-full bg-transparent group-hover:bg-grey-400/20 transition-colors">
-            <ArrowUpDown className="size-3 text-grey-400 group-hover:text-grey-700 dark:group-hover:text-muted-foreground transition-colors" />
-          </span>
-        )}
-      </button>
-    </th>
+      </span>
+      {isActive ? (
+        <div className="flex items-center justify-center size-4 rounded-full bg-table-sort-arrow text-white">
+          <ArrowDown
+            className={`size-2.5 stroke-[3] transition-transform ${
+              direction === "asc" ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+      ) : (
+        <ArrowDown className="size-3 text-table-sort-arrow transition-colors stroke-[2.5]" />
+      )}
+    </button>
   );
 }
 
 /* ─── Main Example ─── */
 export default function TableExample() {
+  type SortColumn = "date" | "description" | "type" | "ocr" | null;
+  type SortDirection = "asc" | "desc";
+
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [rowSize, setRowSize] = useState<RowSize>("M");
+  const [sortColumn, setSortColumn] = useState<SortColumn>("date");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(column);
+      setSortDirection("desc");
+    }
+  };
 
   const allSelected = selected.size === documents.length;
   const someSelected = selected.size > 0 && !allSelected;
@@ -132,142 +147,205 @@ export default function TableExample() {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Row Size Controls */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-foreground">Row height:</span>
-        <div className="inline-flex rounded-lg border border-grey-200 dark:border-border overflow-hidden">
-          {(["S", "M", "L"] as const).map((size) => (
-            <button
-              key={size}
-              onClick={() => setRowSize(size)}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors ${
-                rowSize === size
-                  ? "bg-mz-purple-500 text-white"
-                  : "bg-white dark:bg-card text-foreground hover:bg-grey-blue-500 dark:hover:bg-muted"
-              }`}
-            >
-              {size}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="w-full overflow-hidden">
-      <table className="w-full text-xs table-fixed" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
-        <thead className="bg-[#F5F5F5] dark:bg-muted">
-          <tr>
-            {/* Checkbox */}
-            <th className={`${thBase} ${ROW_SIZES[rowSize].header} ${COL.check} rounded-l-lg border-y border-l border-grey-200 dark:border-border`}>
-              <Checkbox
-                checked={allSelected ? true : someSelected ? "indeterminate" : false}
-                onCheckedChange={toggleAll}
-                aria-label="Select all rows"
-                className="data-[state=checked]:bg-mz-purple-500 data-[state=checked]:border-mz-purple-500"
-              />
+    <div className="w-full overflow-x-auto">
+      <table
+        className="w-full min-w-[800px] font-sans table-fixed"
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: 0,
+          fontSize: "var(--text-sm)",
+        }}
+      >
+        {/* ── Floating header row ── */}
+        <thead>
+          <tr className="bg-table-header-bg dark:bg-muted/40 group">
+            <th className={`pl-5 pr-2 py-2 ${COL.check} rounded-l-xl`}>
+              <div
+                className={`flex items-center justify-center transition-opacity ${
+                  someSelected || allSelected
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+                }`}
+              >
+                <Checkbox
+                  checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                  onCheckedChange={toggleAll}
+                  aria-label="Select all rows"
+                />
+              </div>
             </th>
-            <SortTh active colClass={COL.date} rowSize={rowSize}>
-              DOC. DATE
-            </SortTh>
-            <SortTh colClass={COL.desc} rowSize={rowSize}>DESCRIPTION</SortTh>
-            <SortTh active colClass={COL.type} rowSize={rowSize}>DOCUMENT TYPE</SortTh>
-            {/* Clock/eye spacer */}
-            <th className={`${thBase} ${ROW_SIZES[rowSize].header} ${COL.clock} border-y border-grey-200 dark:border-border`} />
-            <SortTh colClass={COL.ocr} rowSize={rowSize}>OCR STATUS</SortTh>
-            <th className={`${thBase} ${ROW_SIZES[rowSize].header} ${COL.action} border-y border-grey-200 dark:border-border text-center`}>
-              <button className="inline-flex items-center gap-2 cursor-pointer group mx-auto">
+            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.date}`}>
+              <SortHeader
+                isActive={sortColumn === "date"}
+                direction={sortDirection}
+                onClick={() => handleSort("date")}
+              >
+                DOC. DATE
+              </SortHeader>
+            </th>
+            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.desc}`}>
+              <SortHeader
+                isActive={sortColumn === "description"}
+                direction={sortDirection}
+                onClick={() => handleSort("description")}
+              >
+                DESCRIPTION
+              </SortHeader>
+            </th>
+            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.type}`}>
+              <SortHeader
+                isActive={sortColumn === "type"}
+                direction={sortDirection}
+                onClick={() => handleSort("type")}
+              >
+                DOCUMENT TYPE
+              </SortHeader>
+            </th>
+            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.clock}`}>
+              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium" />
+            </th>
+            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.ocr}`}>
+              <SortHeader
+                isActive={sortColumn === "ocr"}
+                direction={sortDirection}
+                onClick={() => handleSort("ocr")}
+              >
+                OCR STATUS
+              </SortHeader>
+            </th>
+            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.action}`}>
+              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium">
                 SUGG. ACTION
-                <span className="inline-flex items-center justify-center size-6 rounded-full bg-transparent group-hover:bg-grey-400/20 transition-colors">
-                  <ArrowUpDown className="size-3.5 text-grey-400 group-hover:text-grey-700 dark:group-hover:text-muted-foreground transition-colors" />
-                </span>
-              </button>
+              </span>
             </th>
-            {/* Kebab header */}
-            <th className={`${thBase} ${ROW_SIZES[rowSize].header} ${COL.kebab} rounded-r-lg border-y border-r border-grey-200 dark:border-border`}>
-              <button className="p-1 rounded hover:bg-grey-200 dark:hover:bg-white/10 transition-colors cursor-pointer">
-                <MoreVertical className="size-4 text-grey-500 dark:text-muted-foreground" />
-              </button>
-            </th>
+            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.kebab} rounded-r-xl`} />
           </tr>
         </thead>
+
         <tbody>
-          {/* Spacer between header and data */}
+          {/* Spacer — visual gap between floating header and body */}
           <tr aria-hidden="true">
             <td colSpan={8} className="h-3 p-0" />
           </tr>
+
           {documents.map((doc, idx) => {
-            const isLast = idx === documents.length - 1;
-            const isSelected = selected.has(doc.id);
             const isEven = idx % 2 === 0;
             const isFirst = idx === 0;
+            const isLast = idx === documents.length - 1;
+            const isSelected = selected.has(doc.id);
+
+            const borderY = "border-b border-grey-200 dark:border-border";
+            const topBorder = isFirst ? "border-t border-grey-200 dark:border-border" : "";
+
             return (
               <tr
                 key={doc.id}
-                className={`
-                  transition-colors
-                  ${isSelected ? "bg-mz-purple-50/50 dark:bg-mz-purple-900/20" : isEven ? "bg-white dark:bg-card" : "bg-grey-blue-500/30 dark:bg-muted/30"}
-                  hover:bg-grey-blue-500/60 dark:hover:bg-muted/50
-                `}
+                className={`group transition-colors ${
+                  isSelected
+                    ? "bg-mz-purple-50/50 dark:bg-mz-purple-900/20"
+                    : isEven
+                    ? "bg-card"
+                    : "bg-grey-blue-500/30 dark:bg-muted/10"
+                } [&:not(:has(td:hover))]:hover:bg-grey-blue-500/60 [&:not(:has(td:hover))]:dark:hover:bg-muted/30`}
               >
                 {/* Checkbox */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.check} border-l border-grey-200 dark:border-border ${isFirst ? "rounded-tl-lg border-t" : ""} ${isLast ? "rounded-bl-lg border-b" : "border-b"}`}>
-                  <Checkbox
-                    checked={isSelected}
-                    onCheckedChange={() => toggleRow(doc.id)}
-                    aria-label={`Select ${doc.description}`}
-                    className="data-[state=checked]:bg-mz-purple-500 data-[state=checked]:border-mz-purple-500"
-                  />
+                <td
+                  className={`pl-5 pr-2 py-2.5 border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                    isFirst ? "rounded-tl-lg" : ""
+                  } ${isLast ? "rounded-bl-lg" : ""}`}
+                >
+                  <div
+                    className={`flex items-center justify-center transition-opacity ${
+                      someSelected || allSelected
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-100"
+                    }`}
+                  >
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() => toggleRow(doc.id)}
+                      aria-label={`Select ${doc.description}`}
+                    />
+                  </div>
                 </td>
 
                 {/* Date */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.date} text-foreground ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
+                <td
+                  className={`px-4 py-2.5 text-charcoal dark:text-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder}`}
+                  style={{ fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-medium)" }}
+                >
                   {doc.date}
                 </td>
 
                 {/* Description */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.desc} ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
+                <td
+                  className={`px-4 py-2.5 text-foreground ${borderY} ${topBorder}`}
+                  style={{ fontSize: "var(--text-sm)" }}
+                >
                   {doc.descriptionLink ? (
-                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer font-normal">
+                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer">
                       {doc.description}
                     </button>
                   ) : (
-                    <span className="text-foreground">{doc.description}</span>
+                    <span className="truncate">{doc.description}</span>
                   )}
                 </td>
 
                 {/* Document Type */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.type} text-foreground ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
+                <td
+                  className={`px-4 py-2.5 text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder}`}
+                  style={{ fontSize: "var(--text-xs)" }}
+                >
                   {doc.documentType}
                 </td>
 
                 {/* Clock icon */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.clock} ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
-                  <Clock className="size-4 text-grey-500 dark:text-grey-700" />
+                <td className={`px-4 py-2.5 text-center ${borderY} ${topBorder}`}>
+                  <Clock className="size-4 text-grey-500 dark:text-grey-700 mx-auto" />
                 </td>
 
                 {/* OCR Status */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.ocr} ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
+                <td className={`px-4 py-2.5 ${borderY} ${topBorder}`}>
                   <OcrStatusTag status={doc.ocrStatus} />
                 </td>
 
                 {/* Suggested Action */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.action} text-center ${isFirst ? "border-t border-grey-200 dark:border-border" : ""} ${isLast ? "border-b border-grey-200 dark:border-border" : "border-b border-grey-200 dark:border-border"}`}>
+                <td className={`px-4 py-2.5 text-center ${borderY} ${topBorder} hover:bg-transparent`}>
                   <ActionButton action={doc.suggestedAction} />
                 </td>
 
                 {/* Kebab */}
-                <td className={`${tdBase} ${ROW_SIZES[rowSize].data} ${COL.kebab} border-r border-grey-200 dark:border-border ${isFirst ? "rounded-tr-lg border-t" : ""} ${isLast ? "rounded-br-lg border-b" : "border-b"}`}>
-                  <button className="p-1 rounded hover:bg-grey-200 dark:hover:bg-muted transition-colors cursor-pointer">
-                    <MoreVertical className="size-4 text-grey-500 hover:text-foreground dark:hover:text-foreground" />
-                  </button>
+                <td
+                  className={`px-4 py-2.5 text-center border-r border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                    isFirst ? "rounded-tr-lg" : ""
+                  } ${isLast ? "rounded-br-lg" : ""} hover:bg-transparent`}
+                >
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="p-1 rounded-md hover:bg-grey-200/60 dark:hover:bg-muted transition-colors cursor-pointer mx-auto inline-flex outline-none ring-0 focus-visible:ring-2 focus-visible:ring-ring">
+                      <MoreVertical className="size-4 text-grey-500 hover:text-foreground transition-colors" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-40 font-sans">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Eye className="size-4 mr-2 text-muted-foreground" />
+                        View details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Pencil className="size-4 mr-2 text-muted-foreground" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="cursor-pointer text-negative-500 hover:text-negative-600 focus:text-negative-600 dark:text-negative-400 dark:hover:text-negative-300 dark:focus:text-negative-300 focus:bg-negative-50 dark:focus:bg-negative-900/20">
+                        <Trash2 className="size-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-    </div>
     </div>
   );
 }
