@@ -39,6 +39,23 @@ import DropdownMenuExample from "../components/examples/DropdownMenuExample";
 import ChartExample from "../components/examples/ChartExample";
 import DataTableExample from "../components/examples/DataTableExample";
 import { StatusLabelExample } from "../components/examples/StatusLabelExample";
+import LabelExample from "../components/examples/LabelExample";
+import DialogExample from "../components/examples/DialogExample";
+import PopoverExample from "../components/examples/PopoverExample";
+import SonnerExample from "../components/examples/SonnerExample";
+import CollapsibleExample from "../components/examples/CollapsibleExample";
+import SheetExample from "../components/examples/SheetExample";
+import AspectRatioExample from "../components/examples/AspectRatioExample";
+import CommandExample from "../components/examples/CommandExample";
+import HoverCardExample from "../components/examples/HoverCardExample";
+import ContextMenuExample from "../components/examples/ContextMenuExample";
+import ScrollAreaExample from "../components/examples/ScrollAreaExample";
+import DrawerExample from "../components/examples/DrawerExample";
+import MenubarExample from "../components/examples/MenubarExample";
+import NavigationMenuExample from "../components/examples/NavigationMenuExample";
+import CarouselExample from "../components/examples/CarouselExample";
+import ResizableExample from "../components/examples/ResizableExample";
+import SidebarExample from "../components/examples/SidebarExample";
 
 const componentData: Record<string, {
   title: string;
