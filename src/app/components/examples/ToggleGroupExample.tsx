@@ -98,7 +98,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Single"
           badgeClassName="bg-dp-100 text-dp-500 border border-dp-300/30 dark:bg-dp-700/30 dark:text-dp-300 dark:border-dp-500/30"
-          description="type=\"single\" - only one item can be active at a time. Selecting a new item deactivates the previous selection."
+          description='type="single" - only one item can be active at a time. Selecting a new item deactivates the previous selection.'
         >
           <div className="flex flex-col gap-2">
             <ToggleGroup
@@ -130,7 +130,7 @@ export default function ToggleGroupExample() {
         <StateRow
           badge="Multiple"
           badgeClassName="bg-dp-100 text-dp-500 border border-dp-300/30 dark:bg-dp-700/30 dark:text-dp-300 dark:border-dp-500/30"
-          description="type=\"multiple\" - each item toggles independently. Any number of items can be active simultaneously."
+          description='type="multiple" - each item toggles independently. Any number of items can be active simultaneously.'
         >
           <div className="flex flex-col gap-2">
             <ToggleGroup
