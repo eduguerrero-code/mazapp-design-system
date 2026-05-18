@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
+import {
   ArrowDown,
   Clock,
   MoreVertical,
@@ -163,9 +171,9 @@ export default function TableExample() {
         }}
       >
         {/* ── Floating header row ── */}
-        <thead>
+        <TableHeader>
           <tr className="bg-table-header-bg dark:bg-muted/40 group">
-            <th className={`px-3 py-2.5 ${COL.check} rounded-l-xl`}>
+            <TableHead className={`${COL.check} rounded-l-xl`} variant="default">
               <div
                 className={`flex items-center justify-center transition-opacity ${
                   someSelected || allSelected
@@ -179,8 +187,8 @@ export default function TableExample() {
                   aria-label="Select all rows"
                 />
               </div>
-            </th>
-            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.date}`}>
+            </TableHead>
+            <TableHead className={COL.date} variant="default">
               <SortHeader
                 isActive={sortColumn === "date"}
                 direction={sortDirection}
@@ -188,8 +196,8 @@ export default function TableExample() {
               >
                 DOC. DATE
               </SortHeader>
-            </th>
-            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.desc}`}>
+            </TableHead>
+            <TableHead className={COL.desc} variant="default">
               <SortHeader
                 isActive={sortColumn === "description"}
                 direction={sortDirection}
@@ -197,8 +205,8 @@ export default function TableExample() {
               >
                 DESCRIPTION
               </SortHeader>
-            </th>
-            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.type}`}>
+            </TableHead>
+            <TableHead className={COL.type} variant="default">
               <SortHeader
                 isActive={sortColumn === "type"}
                 direction={sortDirection}
@@ -206,11 +214,9 @@ export default function TableExample() {
               >
                 DOCUMENT TYPE
               </SortHeader>
-            </th>
-            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.clock}`}>
-              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]" />
-            </th>
-            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.ocr}`}>
+            </TableHead>
+            <TableHead className={COL.clock} variant="centered" />
+            <TableHead className={COL.ocr} variant="default">
               <SortHeader
                 isActive={sortColumn === "ocr"}
                 direction={sortDirection}
@@ -218,20 +224,18 @@ export default function TableExample() {
               >
                 OCR STATUS
               </SortHeader>
-            </th>
-            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.action}`}>
-              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]">
-                SUGG. ACTION
-              </span>
-            </th>
-            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.kebab} rounded-r-xl`} />
+            </TableHead>
+            <TableHead className={COL.action} variant="centered">
+              SUGG. ACTION
+            </TableHead>
+            <TableHead className={`${COL.kebab} rounded-r-xl`} variant="centered" />
           </tr>
-        </thead>
+        </TableHeader>
 
-        <tbody>
+        <TableBody>
           {/* Spacer — visual gap between floating header and body */}
           <tr aria-hidden="true">
-            <td colSpan={8} className="h-3 p-0" />
+            <TableCell colSpan={8} className="h-3 p-0" />
           </tr>
 
           {documents.map((doc, idx) => {
@@ -244,9 +248,9 @@ export default function TableExample() {
             const topBorder = isFirst ? "border-t border-grey-200 dark:border-border" : "";
 
             return (
-              <tr
+              <TableRow
                 key={doc.id}
-                className={`group transition-colors ${
+                className={`group ${
                   isSelected
                     ? "bg-mz-purple-50/50 dark:bg-mz-purple-900/20"
                     : isEven
@@ -255,8 +259,9 @@ export default function TableExample() {
                 } [&:not(:has(td:hover))]:hover:bg-grey-blue-500/60 [&:not(:has(td:hover))]:dark:hover:bg-muted/30`}
               >
                 {/* Checkbox */}
-                <td
-                  className={`px-3 py-3 border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                <TableCell
+                  variant="checkbox"
+                  className={`border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
                     isFirst ? "rounded-tl-lg" : ""
                   } ${isLast ? "rounded-bl-lg" : ""}`}
                 >
@@ -273,18 +278,20 @@ export default function TableExample() {
                       aria-label={`Select ${doc.description}`}
                     />
                   </div>
-                </td>
+                </TableCell>
 
                 {/* Date */}
-                <td
-                  className={`px-3 py-3 text-grey-500 dark:text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder} text-xs`}
+                <TableCell
+                  variant="muted"
+                  className={`${borderY} ${topBorder}`}
                 >
                   {doc.date}
-                </td>
+                </TableCell>
 
                 {/* Description */}
-                <td
-                  className={`px-3 py-3 ${borderY} ${topBorder}`}
+                <TableCell
+                  variant="text"
+                  className={`${borderY} ${topBorder}`}
                 >
                   {doc.descriptionLink ? (
                     <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left truncate w-full text-xs">
@@ -293,35 +300,37 @@ export default function TableExample() {
                   ) : (
                     <span className="block truncate w-full text-foreground text-xs">{doc.description}</span>
                   )}
-                </td>
+                </TableCell>
 
                 {/* Document Type */}
-                <td
-                  className={`px-3 py-3 text-grey-500 dark:text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder} text-xs`}
+                <TableCell
+                  variant="muted"
+                  className={`${borderY} ${topBorder}`}
                 >
                   {doc.documentType}
-                </td>
+                </TableCell>
 
                 {/* Clock icon */}
-                <td className={`px-3 py-3 text-center ${borderY} ${topBorder}`}>
+                <TableCell variant="icon" className={`${borderY} ${topBorder}`}>
                   <Clock className="size-4 text-grey-500 dark:text-grey-700 mx-auto" />
-                </td>
+                </TableCell>
 
                 {/* OCR Status */}
-                <td className={`px-3 py-3 ${borderY} ${topBorder}`}>
+                <TableCell variant="status" className={`${borderY} ${topBorder}`}>
                   <StatusLabel variant={getStatusVariant(doc.ocrStatus)} showIcon>
                     {doc.ocrStatus}
                   </StatusLabel>
-                </td>
+                </TableCell>
 
                 {/* Suggested Action */}
-                <td className={`px-3 py-3 text-center ${borderY} ${topBorder} hover:bg-transparent`}>
+                <TableCell variant="action" className={`${borderY} ${topBorder} hover:bg-transparent`}>
                   <ActionButton action={doc.suggestedAction} />
-                </td>
+                </TableCell>
 
                 {/* Kebab */}
-                <td
-                  className={`px-3 py-3 text-center border-r border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                <TableCell
+                  variant="action"
+                  className={`border-r border-grey-200 dark:border-border ${borderY} ${topBorder} ${
                     isFirst ? "rounded-tr-lg" : ""
                   } ${isLast ? "rounded-br-lg" : ""} hover:bg-transparent`}
                 >
@@ -345,11 +354,11 @@ export default function TableExample() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
+        </TableBody>
       </table>
     </div>
   );
