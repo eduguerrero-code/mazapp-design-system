@@ -284,14 +284,14 @@ export default function TableExample() {
 
                 {/* Description */}
                 <td
-                  className={`px-3 py-3 text-foreground ${borderY} ${topBorder} text-xs`}
+                  className={`px-3 py-3 ${borderY} ${topBorder}`}
                 >
                   {doc.descriptionLink ? (
-                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left truncate w-full">
+                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left truncate w-full text-xs">
                       {doc.description}
                     </button>
                   ) : (
-                    <span className="block truncate w-full">{doc.description}</span>
+                    <span className="block truncate w-full text-foreground text-xs">{doc.description}</span>
                   )}
                 </td>
 
