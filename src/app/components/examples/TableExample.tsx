@@ -287,11 +287,11 @@ export default function TableExample() {
                   className={`px-3 py-3 text-foreground ${borderY} ${topBorder} text-xs`}
                 >
                   {doc.descriptionLink ? (
-                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left break-words">
+                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left truncate w-full">
                       {doc.description}
                     </button>
                   ) : (
-                    <span className="block break-words">{doc.description}</span>
+                    <span className="block truncate w-full">{doc.description}</span>
                   )}
                 </td>
 
