@@ -50,27 +50,27 @@ const documents: DocRow[] = [
 
 /* ─── Column widths ─── */
 const COL = {
-  check: "w-[40px]",
-  date: "w-[10%]",
-  desc: "w-[20%]",
-  type: "w-[20%]",
-  clock: "w-[5%]",
-  ocr: "w-[15%]",
-  action: "w-[12%]",
-  kebab: "w-[5%]",
+  check: "w-[48px]",
+  date: "w-[80px]",
+  desc: "w-[180px]",
+  type: "w-[180px]",
+  clock: "w-[48px]",
+  ocr: "w-[150px]",
+  action: "w-[120px]",
+  kebab: "w-[48px]",
 } as const;
 
 /* ─── Action button ─── */
 function ActionButton({ action }: { action: SuggestedAction }) {
   if (action === "Manual entry") {
     return (
-      <button className="px-3 py-1 rounded-lg bg-dp-500 text-white text-xs font-medium hover:bg-dp-700 transition-colors cursor-pointer">
+      <button className="px-3 py-1 rounded-lg bg-dp-500 text-white text-xs font-medium hover:bg-dp-700 transition-colors cursor-pointer whitespace-nowrap inline-block">
         Manual entry
       </button>
     );
   }
   return (
-    <button className="px-3 py-1 rounded-lg border border-grey-200 dark:border-border text-xs font-medium text-foreground hover:bg-grey-blue-500 dark:hover:bg-muted transition-colors cursor-pointer">
+    <button className="px-3 py-1 rounded-lg border border-grey-200 dark:border-border text-xs font-medium text-foreground hover:bg-grey-blue-500 dark:hover:bg-muted transition-colors cursor-pointer whitespace-nowrap inline-block">
       View
     </button>
   );
@@ -93,7 +93,7 @@ function SortHeader({
       className="inline-flex items-center gap-1.5 cursor-pointer group"
       onClick={onClick}
     >
-      <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium">
+      <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]">
         {children}
       </span>
       {isActive ? (
@@ -149,17 +149,16 @@ export default function TableExample() {
   return (
     <div className="w-full overflow-x-auto">
       <table
-        className="w-full min-w-[800px] font-sans table-fixed"
+        className="w-full font-sans"
         style={{
           borderCollapse: "separate",
           borderSpacing: 0,
-          fontSize: "var(--text-sm)",
         }}
       >
         {/* ── Floating header row ── */}
         <thead>
           <tr className="bg-table-header-bg dark:bg-muted/40 group">
-            <th className={`pl-5 pr-2 py-2 ${COL.check} rounded-l-xl`}>
+            <th className={`px-3 py-2.5 ${COL.check} rounded-l-xl`}>
               <div
                 className={`flex items-center justify-center transition-opacity ${
                   someSelected || allSelected
@@ -174,7 +173,7 @@ export default function TableExample() {
                 />
               </div>
             </th>
-            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.date}`}>
+            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.date}`}>
               <SortHeader
                 isActive={sortColumn === "date"}
                 direction={sortDirection}
@@ -183,7 +182,7 @@ export default function TableExample() {
                 DOC. DATE
               </SortHeader>
             </th>
-            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.desc}`}>
+            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.desc}`}>
               <SortHeader
                 isActive={sortColumn === "description"}
                 direction={sortDirection}
@@ -192,7 +191,7 @@ export default function TableExample() {
                 DESCRIPTION
               </SortHeader>
             </th>
-            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.type}`}>
+            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.type}`}>
               <SortHeader
                 isActive={sortColumn === "type"}
                 direction={sortDirection}
@@ -201,10 +200,10 @@ export default function TableExample() {
                 DOCUMENT TYPE
               </SortHeader>
             </th>
-            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.clock}`}>
-              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium" />
+            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.clock}`}>
+              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]" />
             </th>
-            <th className={`px-4 py-2 text-left whitespace-nowrap ${COL.ocr}`}>
+            <th className={`px-3 py-2.5 text-left whitespace-nowrap ${COL.ocr}`}>
               <SortHeader
                 isActive={sortColumn === "ocr"}
                 direction={sortDirection}
@@ -213,12 +212,12 @@ export default function TableExample() {
                 OCR STATUS
               </SortHeader>
             </th>
-            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.action}`}>
-              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium">
+            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.action}`}>
+              <span className="uppercase tracking-wide text-grey-600 dark:text-grey-600 font-medium text-[9px]">
                 SUGG. ACTION
               </span>
             </th>
-            <th className={`px-4 py-2 text-center whitespace-nowrap ${COL.kebab} rounded-r-xl`} />
+            <th className={`px-3 py-2.5 text-center whitespace-nowrap ${COL.kebab} rounded-r-xl`} />
           </tr>
         </thead>
 
@@ -250,7 +249,7 @@ export default function TableExample() {
               >
                 {/* Checkbox */}
                 <td
-                  className={`pl-5 pr-2 py-2.5 border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                  className={`px-3 py-3 border-l border-grey-200 dark:border-border ${borderY} ${topBorder} ${
                     isFirst ? "rounded-tl-lg" : ""
                   } ${isLast ? "rounded-bl-lg" : ""}`}
                 >
@@ -271,52 +270,49 @@ export default function TableExample() {
 
                 {/* Date */}
                 <td
-                  className={`px-4 py-2.5 text-charcoal dark:text-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder}`}
-                  style={{ fontSize: "var(--text-xs)", fontWeight: "var(--font-weight-medium)" }}
+                  className={`px-3 py-3 text-grey-500 dark:text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder} text-xs`}
                 >
                   {doc.date}
                 </td>
 
                 {/* Description */}
                 <td
-                  className={`px-4 py-2.5 text-foreground ${borderY} ${topBorder}`}
-                  style={{ fontSize: "var(--text-sm)" }}
+                  className={`px-3 py-3 text-foreground whitespace-nowrap overflow-hidden ${borderY} ${topBorder} text-xs`}
                 >
                   {doc.descriptionLink ? (
-                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer">
+                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer truncate block">
                       {doc.description}
                     </button>
                   ) : (
-                    <span className="truncate">{doc.description}</span>
+                    <span className="truncate block">{doc.description}</span>
                   )}
                 </td>
 
                 {/* Document Type */}
                 <td
-                  className={`px-4 py-2.5 text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder}`}
-                  style={{ fontSize: "var(--text-xs)" }}
+                  className={`px-3 py-3 text-grey-500 dark:text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis ${borderY} ${topBorder} text-xs`}
                 >
                   {doc.documentType}
                 </td>
 
                 {/* Clock icon */}
-                <td className={`px-4 py-2.5 text-center ${borderY} ${topBorder}`}>
+                <td className={`px-3 py-3 text-center ${borderY} ${topBorder}`}>
                   <Clock className="size-4 text-grey-500 dark:text-grey-700 mx-auto" />
                 </td>
 
                 {/* OCR Status */}
-                <td className={`px-4 py-2.5 ${borderY} ${topBorder}`}>
+                <td className={`px-3 py-3 ${borderY} ${topBorder}`}>
                   <OcrStatusTag status={doc.ocrStatus} />
                 </td>
 
                 {/* Suggested Action */}
-                <td className={`px-4 py-2.5 text-center ${borderY} ${topBorder} hover:bg-transparent`}>
+                <td className={`px-3 py-3 text-center ${borderY} ${topBorder} hover:bg-transparent`}>
                   <ActionButton action={doc.suggestedAction} />
                 </td>
 
                 {/* Kebab */}
                 <td
-                  className={`px-4 py-2.5 text-center border-r border-grey-200 dark:border-border ${borderY} ${topBorder} ${
+                  className={`px-3 py-3 text-center border-r border-grey-200 dark:border-border ${borderY} ${topBorder} ${
                     isFirst ? "rounded-tr-lg" : ""
                   } ${isLast ? "rounded-br-lg" : ""} hover:bg-transparent`}
                 >
