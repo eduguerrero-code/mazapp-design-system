@@ -1209,6 +1209,247 @@ import { Home } from "lucide-react";
       { name: "DropdownMenu", type: "component", description: "Kebab menu per row (View details, Edit note, Delete) and header kebab (Manage columns, Export view)" },
     ],
   },
+  "label": {
+    title: "Label",
+    description: "Form label component for associating text with inputs, checkboxes, radio buttons, and other form controls.",
+    component: LabelExample,
+    usage: `import { Label } from "./components/ui/label";
+import { Input } from "./components/ui/input";
+
+<Label htmlFor="email">Email Address</Label>
+<Input id="email" type="email" />`,
+  },
+  "dialog": {
+    title: "Dialog",
+    description: "Modal dialog component for important messages, forms, and user interactions that require focus.",
+    component: DialogExample,
+    usage: `import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "./components/ui/dialog";
+import { Button } from "./components/ui/button";
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Dialog Title</DialogTitle>
+      <DialogDescription>Dialog description goes here.</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button>Confirm</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`,
+  },
+  "popover": {
+    title: "Popover",
+    description: "Popover overlay component for displaying rich content in a floating panel.",
+    component: PopoverExample,
+    usage: `import { Popover, PopoverContent, PopoverTrigger } from "./components/ui/popover";
+import { Button } from "./components/ui/button";
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button>Open Popover</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <p>Popover content goes here.</p>
+  </PopoverContent>
+</Popover>`,
+  },
+  "sonner": {
+    title: "Sonner",
+    description: "Toast notification system for displaying brief messages and alerts.",
+    component: SonnerExample,
+    usage: `import { toast } from "sonner";
+
+toast("Event created successfully");
+toast.success("Operation completed");
+toast.error("Something went wrong");
+toast.promise(promise, {
+  loading: "Loading...",
+  success: "Success!",
+  error: "Failed",
+});`,
+  },
+  "collapsible": {
+    title: "Collapsible",
+    description: "Component for creating expandable and collapsible content sections.",
+    component: CollapsibleExample,
+    usage: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./components/ui/collapsible";
+
+<Collapsible>
+  <CollapsibleTrigger>Click to expand</CollapsibleTrigger>
+  <CollapsibleContent>
+    Hidden content goes here.
+  </CollapsibleContent>
+</Collapsible>`,
+  },
+  "sheet": {
+    title: "Sheet",
+    description: "Side sheet component that slides in from the edge of the screen.",
+    component: SheetExample,
+    usage: `import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./components/ui/sheet";
+
+<Sheet>
+  <SheetTrigger asChild>
+    <Button>Open Sheet</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Sheet Title</SheetTitle>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>`,
+  },
+  "aspect-ratio": {
+    title: "Aspect Ratio",
+    description: "Container component for maintaining a specific aspect ratio for content.",
+    component: AspectRatioExample,
+    usage: `import { AspectRatio } from "./components/ui/aspect-ratio";
+
+<AspectRatio ratio={16 / 9}>
+  <img src="image.jpg" alt="Image" />
+</AspectRatio>`,
+  },
+  "command": {
+    title: "Command",
+    description: "Command menu component for keyboard-driven navigation and actions.",
+    component: CommandExample,
+    usage: `import { Command, CommandInput, CommandList, CommandItem } from "./components/ui/command";
+
+<Command>
+  <CommandInput placeholder="Type a command..." />
+  <CommandList>
+    <CommandItem>Calendar</CommandItem>
+    <CommandItem>Settings</CommandItem>
+  </CommandList>
+</Command>`,
+  },
+  "hover-card": {
+    title: "Hover Card",
+    description: "Card that appears on hover, useful for displaying additional information.",
+    component: HoverCardExample,
+    usage: `import { HoverCard, HoverCardContent, HoverCardTrigger } from "./components/ui/hover-card";
+
+<HoverCard>
+  <HoverCardTrigger>Hover me</HoverCardTrigger>
+  <HoverCardContent>
+    Additional information appears here.
+  </HoverCardContent>
+</HoverCard>`,
+  },
+  "context-menu": {
+    title: "Context Menu",
+    description: "Right-click context menu for providing contextual actions.",
+    component: ContextMenuExample,
+    usage: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "./components/ui/context-menu";
+
+<ContextMenu>
+  <ContextMenuTrigger>Right click here</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Copy</ContextMenuItem>
+    <ContextMenuItem>Paste</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`,
+  },
+  "scroll-area": {
+    title: "Scroll Area",
+    description: "Custom scrollable area with styled scrollbars.",
+    component: ScrollAreaExample,
+    usage: `import { ScrollArea } from "./components/ui/scroll-area";
+
+<ScrollArea className="h-72 w-full">
+  <div>Long content goes here...</div>
+</ScrollArea>`,
+  },
+  "drawer": {
+    title: "Drawer",
+    description: "Drawer component that slides up from the bottom of the screen.",
+    component: DrawerExample,
+    usage: `import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "./components/ui/drawer";
+
+<Drawer>
+  <DrawerTrigger>Open Drawer</DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Drawer Title</DrawerTitle>
+    </DrawerHeader>
+  </DrawerContent>
+</Drawer>`,
+  },
+  "menubar": {
+    title: "Menubar",
+    description: "Application menubar component for desktop-style menus.",
+    component: MenubarExample,
+    usage: `import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "./components/ui/menubar";
+
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New</MenubarItem>
+      <MenubarItem>Open</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>`,
+  },
+  "navigation-menu": {
+    title: "Navigation Menu",
+    description: "Multi-level navigation menu with dropdown support.",
+    component: NavigationMenuExample,
+    usage: `import { NavigationMenu, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent } from "./components/ui/navigation-menu";
+
+<NavigationMenu>
+  <NavigationMenuItem>
+    <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+    <NavigationMenuContent>
+      Navigation content
+    </NavigationMenuContent>
+  </NavigationMenuItem>
+</NavigationMenu>`,
+  },
+  "carousel": {
+    title: "Carousel",
+    description: "Image and content carousel with navigation controls.",
+    component: CarouselExample,
+    usage: `import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./components/ui/carousel";
+
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>Item 1</CarouselItem>
+    <CarouselItem>Item 2</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>`,
+  },
+  "resizable": {
+    title: "Resizable",
+    description: "Resizable panel layouts with draggable handles.",
+    component: ResizableExample,
+    usage: `import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
+
+<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel>Panel 1</ResizablePanel>
+  <ResizableHandle />
+  <ResizablePanel>Panel 2</ResizablePanel>
+</ResizablePanelGroup>`,
+  },
+  "sidebar": {
+    title: "Sidebar",
+    description: "Application sidebar component for navigation.",
+    component: SidebarExample,
+    usage: `import { Sidebar, SidebarContent, SidebarGroup, SidebarProvider } from "./components/ui/sidebar";
+
+<SidebarProvider>
+  <Sidebar>
+    <SidebarContent>
+      Navigation items
+    </SidebarContent>
+  </Sidebar>
+</SidebarProvider>`,
+  },
 };
 
 function CodeBlock({ code, onCopy }: { code: string; onCopy: () => void }) {
