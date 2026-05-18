@@ -8,7 +8,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { OcrStatusTag, type OcrStatus } from "../ui/ocr-status-tag";
+import { StatusLabel } from "../ui/status-label";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+
+type OcrStatus = "COMPLETED" | "FAILED" | "EXCLUDED" | "PENDING" | "CORRECTED";
 
 /* ─── Data ─── */
 type SuggestedAction = "View" | "Manual entry";
@@ -52,13 +54,18 @@ const documents: DocRow[] = [
 const COL = {
   check: "w-[48px]",
   date: "w-[80px]",
-  desc: "w-[180px]",
+  desc: "w-[200px]",
   type: "w-[180px]",
   clock: "w-[48px]",
   ocr: "w-[150px]",
   action: "w-[120px]",
   kebab: "w-[48px]",
 } as const;
+
+/* ─── Map OCR Status to StatusLabel variant ─── */
+function getStatusVariant(status: OcrStatus): "completed" | "failed" | "excluded" | "pending" | "corrected" {
+  return status.toLowerCase() as "completed" | "failed" | "excluded" | "pending" | "corrected";
+}
 
 /* ─── Action button ─── */
 function ActionButton({ action }: { action: SuggestedAction }) {
@@ -277,14 +284,14 @@ export default function TableExample() {
 
                 {/* Description */}
                 <td
-                  className={`px-3 py-3 text-foreground whitespace-nowrap overflow-hidden ${borderY} ${topBorder} text-xs`}
+                  className={`px-3 py-3 text-foreground ${borderY} ${topBorder} text-xs`}
                 >
                   {doc.descriptionLink ? (
-                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer truncate block">
+                    <button className="text-foreground hover:text-foreground/80 transition-colors cursor-pointer block text-left break-words">
                       {doc.description}
                     </button>
                   ) : (
-                    <span className="truncate block">{doc.description}</span>
+                    <span className="block break-words">{doc.description}</span>
                   )}
                 </td>
 
@@ -302,7 +309,9 @@ export default function TableExample() {
 
                 {/* OCR Status */}
                 <td className={`px-3 py-3 ${borderY} ${topBorder}`}>
-                  <OcrStatusTag status={doc.ocrStatus} />
+                  <StatusLabel variant={getStatusVariant(doc.ocrStatus)} showIcon>
+                    {doc.ocrStatus}
+                  </StatusLabel>
                 </td>
 
                 {/* Suggested Action */}
